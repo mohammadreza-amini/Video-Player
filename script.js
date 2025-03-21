@@ -1,7 +1,10 @@
 const control_container = document.querySelector(".controls-main");
 const video = document.querySelector("video");
 const play_btn = document.querySelector(".btn-play");
-const play_btn_icon = document.querySelector(".btn-play>i");
+const play_btn_icon = document.querySelector(".btn-play > i");
+const volume_show = document.querySelector(".volume-show");
+const volume_btn = document.querySelector(".volume-btn");
+const volume_btn_icon = document.querySelector(".volume-btn > i");
 
 
 
@@ -30,8 +33,8 @@ function seekButton(n) {
 }
 
 video.addEventListener("timeupdate", () => {
-    let percent = video.currentTime / video.duration * 100;
-    document.querySelector("progress").style.width = percent + "%";
+    let percent = (video.currentTime / video.duration) * 100;
+    document.querySelector(".progress").style.width = percent + "%";
 });
 
 document.onkeydown = (e) => {
@@ -39,11 +42,21 @@ document.onkeydown = (e) => {
         case "ArrowUp":
             if (video.volume < 1) {
                 video.volume = (video.volume + .1).toFixed(1);
+                volume_show.textContent = video.volume * 100 + "%";
+                if (volume_btn_icon.classList.contains("fa-volume-mute")) {
+                    volume_btn_icon.classList.remove("fa-volume-mute");
+                    volume_btn_icon.classList.add("fa-volume");
+                }
             }
             break;
         case "ArrowDown":
             if (video.volume > 0) {
                 video.volume = (video.volume - .1).toFixed(1);
+                volume_show.textContent = (video.volume * 100) + "%";
+                if (video.volume == 0) {
+                    volume_btn_icon.classList.remove("fa-volume");
+                    volume_btn_icon.classList.add("fa-volume-mute");
+                }
             }
             break;
     }
