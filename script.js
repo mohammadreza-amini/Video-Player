@@ -5,6 +5,7 @@ const play_btn_icon = document.querySelector(".btn-play > i");
 const volume_show = document.querySelector(".volume-show");
 const volume_btn = document.querySelector(".volume-btn");
 const volume_btn_icon = document.querySelector(".volume-btn > i");
+const stop_btn = document.querySelector(".btn-stop");
 
 
 
@@ -48,6 +49,11 @@ document.onkeydown = (e) => {
                     volume_btn_icon.classList.add("fa-volume");
                 }
             }
+            if (video.muted) {
+                video.muted = false;
+                volume_btn_icon.classList.remove("fa-volume-mute");
+                volume_btn_icon.classList.add("fa-volume");
+            }
             break;
         case "ArrowDown":
             if (video.volume > 0) {
@@ -59,5 +65,42 @@ document.onkeydown = (e) => {
                 }
             }
             break;
+        case "ArrowRight":
+            seekButton(1);
+            break;
+        case "ArrowLeft":
+            seekButton(-1);
+            break;
+        case "Enter":
+            full_screen();
+            break;
     }
 }
+
+function full_screen() {
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    }
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+}
+
+function toggle_mute(){
+    if (video.muted) {
+        video.muted = false;
+        volume_btn_icon.classList.add("fa-volume");
+        volume_btn_icon.classList.remove("fa-volume-mute");
+    } else {
+        video.muted = true;
+        volume_btn_icon.classList.remove("fa-volume");
+        volume_btn_icon.classList.add("fa-volume-mute");
+    }
+}
+
+stop_btn.addEventListener("click", () => {
+  video.pause(); 
+  video.currentTime = 0; 
+  play_btn_icon.classList.remove("fa-pause");
+  play_btn_icon.classList.add("fa-play");
+});
